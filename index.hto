@@ -1,0 +1,194 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jett's Weekly Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8fc;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #game-stats {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #points, #level, #streak {
+      font-size: 18px;
+      margin: 5px;
+      display: inline-block;
+      font-weight: bold;
+    }
+    #progress-container {
+      width: 80%;
+      margin: 10px auto;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+    }
+    #progress-bar {
+      height: 20px;
+      background: #4caf50;
+      width: 0%;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #0077cc;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    textarea {
+      width: 95%;
+      height: 60px;
+      resize: vertical;
+    }
+    #reward-message {
+      text-align: center;
+      font-size: 18px;
+      color: #ff6600;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jett Matthew Brumm – Weekly Schedule</h1>
+  <div id="game-stats">
+    <div id="points">Points: 0</div>
+    <div id="level">Level: 1</div>
+    <div id="streak">Streak: 0 days</div>
+    <div id="progress-container"><div id="progress-bar"></div></div>
+  </div>
+  <div id="reward-message"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>✅ Done</th>
+        <th>📘 Work On</th>
+        <th>🎯 Goals</th>
+      </tr>
+    </thead>
+    <tbody id="schedule-body"></tbody>
+  </table>
+
+  <script>
+    const schedule = [
+      {time: "6:20 – 6:45", mon: "Wake up & get ready", tue: "Wake up & get ready", wed: "Wake up & get ready", thu: "Wake up & get ready", fri: "Wake up & get ready"},
+      {time: "6:45 – 7:10", mon: "Breakfast", tue: "Breakfast", wed: "Breakfast", thu: "Breakfast", fri: "Breakfast"},
+      {time: "7:10 – 7:15", mon: "Drive to bus stop", tue: "Drive to bus stop", wed: "Drive to bus stop", thu: "Drive to bus stop", fri: "Drive to bus stop"},
+      {time: "7:15 – 8:00", mon: "Bus to school", tue: "Bus to school", wed: "Bus to school", thu: "Bus to school", fri: "Bus to school"},
+      {time: "8:15 – 3:15", mon: "School", tue: "School", wed: "School", thu: "School", fri: "School"},
+      {time: "3:15 – 4:15", mon: "Ride home", tue: "Ride home", wed: "Ride home", thu: "Ride home", fri: "Ride home"},
+      {time: "4:15 – 4:30", mon: "Snack", tue: "Snack", wed: "Snack", thu: "Snack", fri: "Snack"},
+      {time: "4:30 – 6:15", mon: "Homework (1 hr 45 min)", tue: "Homework (2 hrs)", wed: "Homework (1.5 hrs)", thu: "Homework (2 hrs)", fri: "Homework (1.5 hrs)"},
+      {time: "6:15 – 6:45", mon: "Dinner", tue: "Dinner", wed: "Dinner/snack before practice", thu: "Dinner", fri: "Dinner/snack before practice"},
+      {time: "6:45 – 7:15", mon: "Homework (45 min)", tue: "Homework (30 min)", wed: "Drive to rink", thu: "Homework (30 min)", fri: "Drive to rink"},
+      {time: "7:15 – 7:30", mon: "Free time", tue: "Drive to Max Pro", wed: "Hockey practice", thu: "Drive to Max Pro", fri: "Hockey practice"},
+      {time: "7:30 – 8:00", mon: "Free time", tue: "Max Pro Hockey", wed: "Hockey practice", thu: "Max Pro Hockey", fri: "Hockey practice"},
+      {time: "8:00 – 8:30", mon: "Free time", tue: "Max Pro Hockey", wed: "Drive home", thu: "Max Pro Hockey", fri: "Drive home"},
+      {time: "8:30 – 9:00", mon: "Get ready for bed", tue: "Max Pro Hockey", wed: "Homework (1.5 hrs, until 9:30)", thu: "Max Pro Hockey", fri: "Homework (1.5 hrs, until 9:30)"},
+      {time: "9:00 – 9:30", mon: "Lights out (sleep)", tue: "Drive home (9:30–9:50)", wed: "Homework (continues)", thu: "Drive home (9:30–9:50)", fri: "Homework (continues)"},
+      {time: "9:30 – 10:00", mon: "—", tue: "Snack/shower + Homework (30 min)", wed: "Get ready for bed (ends 10:00)", thu: "Snack/shower + Homework (30 min)", fri: "Get ready for bed (ends 10:00)"},
+      {time: "10:00 – 10:30", mon: "—", tue: "Bedtime around 10:30", wed: "", thu: "", fri: ""}
+    ];
+
+    let points = parseInt(localStorage.getItem('points')) || 0;
+    let level = parseInt(localStorage.getItem('level')) || 1;
+    let streak = parseInt(localStorage.getItem('streak')) || 0;
+    let lastDay = localStorage.getItem('lastDay') || '';
+
+    function updateStats() {
+      document.getElementById('points').innerText = "Points: " + points;
+      document.getElementById('level').innerText = "Level: " + level;
+      document.getElementById('streak').innerText = "Streak: " + streak + " days";
+      let progress = (points % 100);
+      document.getElementById('progress-bar').style.width = progress + "%";
+      localStorage.setItem('points', points);
+      localStorage.setItem('level', level);
+      localStorage.setItem('streak', streak);
+      localStorage.setItem('lastDay', new Date().toDateString());
+    }
+
+    function toggleCheckbox(cb) {
+      if (cb.checked) {
+        points += 10;
+        if (points % 100 === 0) {
+          level++;
+          document.getElementById('reward-message').innerText = `🎉 Level Up! You reached Level ${level}!`;
+          setTimeout(() => document.getElementById('reward-message').innerText = "", 4000);
+        }
+      } else {
+        points -= 10;
+      }
+      updateStats();
+    }
+
+    function checkStreak() {
+      const today = new Date().toDateString();
+      if (lastDay !== today) {
+        let checkedToday = document.querySelectorAll('input[type=checkbox]:checked').length;
+        if (checkedToday >= 5) {
+          streak++;
+          document.getElementById('reward-message').innerText = `🔥 Streak Bonus! ${streak} days in a row!`;
+          setTimeout(() => document.getElementById('reward-message').innerText = "", 4000);
+        } else {
+          streak = 0; // reset streak if not enough tasks done
+        }
+      }
+      updateStats();
+    }
+
+    const tbody = document.getElementById('schedule-body');
+    schedule.forEach(row => {
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td>${row.time}</td>
+        <td>${row.mon}</td>
+        <td>${row.tue}</td>
+        <td>${row.wed}</td>
+        <td>${row.thu}</td>
+        <td>${row.fri}</td>
+        <td><input type="checkbox" onchange="toggleCheckbox(this)"></td>
+        <td><textarea placeholder="What to work on..."></textarea></td>
+        <td><textarea placeholder="Goals..."></textarea></td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+    window.onload = () => {
+      updateStats();
+      checkStreak();
+    };
+  </script>
+</body>
+</html>
