@@ -1,3 +1,125 @@
+import React from "react";
 
-<img src="schedule.png" alt="Jett's Weekly Schedule">
+export default function JettSchedule() {
+  const schedule = {
+    Monday: [
+      ["6:20 – 6:45", "Wake up & get ready"],
+      ["6:45 – 7:10", "Breakfast"],
+      ["7:10 – 7:15", "Drive to bus stop"],
+      ["7:15 – 8:00", "Bus to school"],
+      ["8:15 – 3:15", "School"],
+      ["3:15 – 4:15", "Ride home"],
+      ["4:15 – 4:30", "Snack"],
+      ["4:30 – 6:15", "Homework (1 hr 45 min)"],
+      ["6:15 – 6:45", "Dinner"],
+      ["6:45 – 7:15", "Homework (45 min)"],
+      ["7:15 – 7:30", "Free time"],
+      ["7:30 – 8:30", "Free time"],
+      ["8:30 – 9:00", "Get ready for bed"],
+      ["9:00 – 9:30", "Lights out (sleep)"],
+    ],
+    Tuesday: [
+      ["6:20 – 6:45", "Wake up & get ready"],
+      ["6:45 – 7:10", "Breakfast"],
+      ["7:10 – 7:15", "Drive to bus stop"],
+      ["7:15 – 8:00", "Bus to school"],
+      ["8:15 – 3:15", "School"],
+      ["3:15 – 4:15", "Ride home"],
+      ["4:15 – 4:30", "Snack"],
+      ["4:30 – 6:15", "Homework (2 hrs)"],
+      ["6:15 – 6:45", "Dinner"],
+      ["6:45 – 7:15", "Homework (30 min)"],
+      ["7:15 – 7:30", "Drive to Max Pro"],
+      ["7:30 – 9:30", "Max Pro Hockey"],
+      ["9:30 – 9:50", "Drive home"],
+      ["9:50 – 10:20", "Snack/shower + Homework (30 min)"],
+      ["10:20 – 10:30", "Bedtime"],
+    ],
+    Wednesday: [
+      ["6:20 – 6:45", "Wake up & get ready"],
+      ["6:45 – 7:10", "Breakfast"],
+      ["7:10 – 7:15", "Drive to bus stop"],
+      ["7:15 – 8:00", "Bus to school"],
+      ["8:15 – 3:15", "School"],
+      ["3:15 – 4:15", "Ride home"],
+      ["4:15 – 4:30", "Snack"],
+      ["4:30 – 6:00", "Homework (1.5 hrs)"],
+      ["6:00 – 6:20", "Dinner/snack before practice"],
+      ["6:20 – 7:20", "Hockey practice"],
+      ["7:20 – 8:00", "Drive home"],
+      ["8:00 – 9:30", "Homework (1.5 hrs)"],
+      ["9:30 – 10:00", "Get ready for bed"],
+      ["10:00 – 10:30", "Sleep"],
+    ],
+    Thursday: [
+      ["6:20 – 6:45", "Wake up & get ready"],
+      ["6:45 – 7:10", "Breakfast"],
+      ["7:10 – 7:15", "Drive to bus stop"],
+      ["7:15 – 8:00", "Bus to school"],
+      ["8:15 – 3:15", "School"],
+      ["3:15 – 4:15", "Ride home"],
+      ["4:15 – 4:30", "Snack"],
+      ["4:30 – 6:15", "Homework (2 hrs)"],
+      ["6:15 – 6:45", "Dinner"],
+      ["6:45 – 7:15", "Homework (30 min)"],
+      ["7:15 – 7:30", "Drive to Max Pro"],
+      ["7:30 – 9:30", "Max Pro Hockey"],
+      ["9:30 – 9:50", "Drive home"],
+      ["9:50 – 10:20", "Snack/shower + Homework (30 min)"],
+      ["10:20 – 10:30", "Bedtime"],
+    ],
+    Friday: [
+      ["6:20 – 6:45", "Wake up & get ready"],
+      ["6:45 – 7:10", "Breakfast"],
+      ["7:10 – 7:15", "Drive to bus stop"],
+      ["7:15 – 8:00", "Bus to school"],
+      ["8:15 – 3:15", "School"],
+      ["3:15 – 4:15", "Ride home"],
+      ["4:15 – 4:30", "Snack"],
+      ["4:30 – 6:00", "Homework (1.5 hrs)"],
+      ["6:00 – 6:20", "Dinner/snack before practice"],
+      ["6:20 – 7:20", "Hockey practice"],
+      ["7:20 – 8:00", "Drive home"],
+      ["8:00 – 9:30", "Homework (1.5 hrs)"],
+      ["9:30 – 10:00", "Get ready for bed"],
+      ["10:00 – 10:30", "Sleep"],
+    ],
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">
+        Jett Matthew Brumm – Weekly Schedule (Age 12)
+      </h1>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-400 shadow-lg rounded-lg bg-white">
+          <thead className="bg-blue-500 text-white">
+            <tr>
+              <th className="px-4 py-2 border">Time</th>
+              {Object.keys(schedule).map((day) => (
+                <th key={day} className="px-4 py-2 border">
+                  {day}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.Monday.map((_, i) => (
+              <tr key={i} className="hover:bg-blue-100">
+                <td className="px-4 py-2 border font-semibold">
+                  {schedule.Monday[i][0]}
+                </td>
+                {Object.keys(schedule).map((day) => (
+                  <td key={day + i} className="px-4 py-2 border">
+                    {schedule[day][i] ? schedule[day][i][1] : ""}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
