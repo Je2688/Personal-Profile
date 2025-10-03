@@ -39,4 +39,176 @@
   </table>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Jett Matthew Brumm – Weekly Schedule</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #eef6ff; 
+      padding: 20px; 
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      background: white; 
+      font-size: 14px;
+    }
+    th, td { 
+      border: 1px solid #333; 
+      padding: 8px; 
+      text-align: center; 
+      vertical-align: middle;
+    }
+    th { 
+      background: #007bff; 
+      color: white; 
+    }
+    tr:nth-child(even) { background: #f8f8f8; }
+
+    /* 🎨 Color coding */
+    .routine { background: #d4f1f4; }   /* light blue */
+    .school { background: #fff3b0; }    /* yellow */
+    .homework { background: #dcd6f7; }  /* purple */
+    .sports { background: #f6cacc; }    /* light red */
+    .freetime { background: #c8facc; }  /* light green */
+    .dinner { background: #ffd6a5; }    /* orange */
+
+    /* 🎮 Game box */
+    #game {
+      margin-top: 30px;
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #points {
+      font-size: 20px;
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jett Matthew Brumm – Weekly Schedule (Age 12)</h1>
+  <table>
+    <tr>
+      <th>Time</th>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+    </tr>
+
+    <tr>
+      <td>6:20–6:45</td>
+      <td class="routine"><input type="checkbox"> Wake up & get ready</td>
+      <td class="routine"><input type="checkbox"> Wake up & get ready</td>
+      <td class="routine"><input type="checkbox"> Wake up & get ready</td>
+      <td class="routine"><input type="checkbox"> Wake up & get ready</td>
+      <td class="routine"><input type="checkbox"> Wake up & get ready</td>
+    </tr>
+
+    <tr>
+      <td>6:45–7:10</td>
+      <td class="routine"><input type="checkbox"> Breakfast</td>
+      <td class="routine"><input type="checkbox"> Breakfast</td>
+      <td class="routine"><input type="checkbox"> Breakfast</td>
+      <td class="routine"><input type="checkbox"> Breakfast</td>
+      <td class="routine"><input type="checkbox"> Breakfast</td>
+    </tr>
+
+    <tr>
+      <td>7:10–7:15</td>
+      <td class="routine"><input type="checkbox"> Bus stop</td>
+      <td class="routine"><input type="checkbox"> Bus stop</td>
+      <td class="routine"><input type="checkbox"> Bus stop</td>
+      <td class="routine"><input type="checkbox"> Bus stop</td>
+      <td class="routine"><input type="checkbox"> Bus stop</td>
+    </tr>
+
+    <tr>
+      <td>8:15–3:15</td>
+      <td class="school"><input type="checkbox"> School</td>
+      <td class="school"><input type="checkbox"> School</td>
+      <td class="school"><input type="checkbox"> School</td>
+      <td class="school"><input type="checkbox"> School</td>
+      <td class="school"><input type="checkbox"> School</td>
+    </tr>
+
+    <tr>
+      <td>4:30–6:15</td>
+      <td class="homework"><input type="checkbox"> Homework (1h45)</td>
+      <td class="homework"><input type="checkbox"> Homework (2h)</td>
+      <td class="homework"><input type="checkbox"> Homework (1.5h)</td>
+      <td class="homework"><input type="checkbox"> Homework (2h)</td>
+      <td class="homework"><input type="checkbox"> Homework (1.5h)</td>
+    </tr>
+
+    <tr>
+      <td>7:30–9:30</td>
+      <td class="freetime"><input type="checkbox"> Free time</td>
+      <td class="sports"><input type="checkbox"> Max Pro</td>
+      <td class="sports"><input type="checkbox"> Practice</td>
+      <td class="sports"><input type="checkbox"> Max Pro</td>
+      <td class="sports"><input type="checkbox"> Practice</td>
+    </tr>
+
+    <tr>
+      <td>9:00–10:30</td>
+      <td class="routine"><input type="checkbox"> Bedtime</td>
+      <td class="homework"><input type="checkbox"> Homework/Bed</td>
+      <td class="homework"><input type="checkbox"> Homework/Bed</td>
+      <td class="homework"><input type="checkbox"> Homework/Bed</td>
+      <td class="homework"><input type="checkbox"> Homework/Bed</td>
+    </tr>
+  </table>
+
+  <!-- 🎮 Little Game -->
+  <div id="game">
+    <h2>🎯 Task Points Game</h2>
+    <p>Check off your schedule items to earn points!</p>
+    <p id="points">Points: 0</p>
+  </div>
+
+  <script>
+    // Save checkboxes in localStorage and award points
+    document.addEventListener("DOMContentLoaded", () => {
+      const checkboxes = document.querySelectorAll("input[type=checkbox]");
+      const pointsDisplay = document.getElementById("points");
+      let points = parseInt(localStorage.getItem("points")) || 0;
+      pointsDisplay.textContent = "Points: " + points;
+
+      checkboxes.forEach((box, i) => {
+        // Restore checked state
+        if (localStorage.getItem("box" + i) === "true") {
+          box.checked = true;
+        }
+
+        // Add listener
+        box.addEventListener("change", () => {
+          localStorage.setItem("box" + i, box.checked);
+
+          if (box.checked) {
+            points += 10; // 🎉 10 points per task
+          } else {
+            points -= 10;
+          }
+          if (points < 0) points = 0;
+          localStorage.setItem("points", points);
+          pointsDisplay.textContent = "Points: " + points;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
 
