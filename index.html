@@ -550,4 +550,109 @@
     if (e.key === "d" && goalieX + goalieWidth < canvas.width) goalieX += 20;
   });
 </script>
+<script>
+  // 🏒 2-Player Hockey Game (Shooter vs Goalie)
+  const canvas = document.getElementById("hockeyCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Shooter puck
+  let puckX = 250, puckY = 270, puckRadius = 12;
+  let shots = [];
+
+  // Scores
+  let shooterScore = 0;
+  let goalieScore = 0;
+
+  // Goal area
+  let goalX = 200, goalY = 20, goalWidth = 100, goalHeight = 20;
+
+  // Goalie (defender)
+  let goalieX = 220, goalieY = goalY + goalHeight + 5, goalieWidth = 60, goalieHeight = 12;
+
+  // Draw puck
+  function drawPuck() {
+    ctx.beginPath();
+    ctx.arc(puckX, puckY, puckRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  // Draw goal
+  function drawGoal() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(goalX, goalY, goalWidth, goalHeight);
+  }
+
+  // Draw goalie
+  function drawGoalie() {
+    ctx.fillStyle = "blue";
+    ctx.fillRect(goalieX, goalieY, goalieWidth, goalieHeight);
+  }
+
+  // Draw shots
+  function drawShots() {
+    ctx.fillStyle = "black";
+    shots.forEach((shot, i) => {
+      ctx.beginPath();
+      ctx.arc(shot.x, shot.y, puckRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+      shot.y -= 5;
+
+      // Check goalie block
+      if (
+        shot.y - puckRadius < goalieY + goalieHeight &&
+        shot.y + puckRadius > goalieY &&
+        shot.x > goalieX &&
+        shot.x < goalieX + goalieWidth
+      ) {
+        goalieScore++;
+        updateScore();
+        shots.splice(i, 1);
+        return;
+      }
+
+      // Check goal
+      if (
+        shot.y - puckRadius < goalY + goalHeight &&
+        shot.x > goalX &&
+        shot.x < goalX + goalWidth
+      ) {
+        shooterScore++;
+        updateScore();
+        shots.splice(i, 1);
+      }
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGoal();
+    drawGoalie();
+    drawPuck();
+    drawShots();
+  }
+
+  setInterval(draw, 30);
+
+  function updateScore() {
+    document.getElementById("score").textContent =
+      "Shooter: " + shooterScore + " | Goalie: " + goalieScore;
+  }
+
+  // Controls
+  document.addEventListener("keydown", (e) => {
+    // Shooter (bottom player) controls
+    if (e.key === "ArrowLeft" && puckX - 20 > 0) puckX -= 20;
+    if (e.key === "ArrowRight" && puckX + 20 < canvas.width) puckX += 20;
+    if (e.key === " ") {
+      shots.push({ x: puckX, y: puckY - 15 });
+    }
+
+    // Goalie (top player) controls
+    if (e.key === "a" && goalieX > 0) goalieX -= 20;
+    if (e.key === "d" && goalieX + goalieWidth < canvas.width) goalieX += 20;
+  });
+</script>
 
